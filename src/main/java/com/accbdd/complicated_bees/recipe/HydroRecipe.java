@@ -1,8 +1,10 @@
 package com.accbdd.complicated_bees.recipe;
 
+import com.accbdd.complicated_bees.bees.Product;
 import com.accbdd.complicated_bees.bees.gene.enums.EnumTolerance;
 import com.accbdd.complicated_bees.registry.EsotericRegistration;
 import com.google.gson.JsonObject;
+import com.mojang.serialization.JsonOps;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -15,38 +17,42 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
-public class TempUnitRecipe implements Recipe<Container> {
+public class HydroRecipe implements Recipe<Container> {
     private final ResourceLocation id;
     private final Ingredient input;
-    private final EnumTolerance tempChange;
+    private final Product output;
+    private final EnumTolerance humidityChange;
     private final float useChance;
 
-    public static final RecipeSerializer<TempUnitRecipe> SERIALIZER = new RecipeSerializer<>() {
+    public static final RecipeSerializer<HydroRecipe> SERIALIZER = new RecipeSerializer<>() {
         @Override
-        public TempUnitRecipe fromJson(ResourceLocation pRecipeId, JsonObject json) {
-            Ingredient input = Ingredient.fromJson(json.get("input"), false);
-            EnumTolerance tempChange = EnumTolerance.getFromString(json.get("temp_change").getAsString());
+        public HydroRecipe fromJson(ResourceLocation pRecipeId, JsonObject json) {
+            Ingredient input = Ingredient.fromJson(json.getAsJsonObject("input"), false);
+            Product output =  Product.CODEC.decode(JsonOps.INSTANCE, json.getAsJsonObject("output")).result().get().getFirst();
+            EnumTolerance humidityChange = EnumTolerance.getFromString(json.get("humidity_change").getAsString());
             float useChance = json.get("use_chance").getAsFloat();
-            return new TempUnitRecipe(pRecipeId, input, tempChange, useChance);
+            return new HydroRecipe(pRecipeId, input, output, humidityChange, useChance);
         }
 
         @Override
-        public @Nullable TempUnitRecipe fromNetwork(ResourceLocation pRecipeId, FriendlyByteBuf pBuffer) {
-            return new TempUnitRecipe(pRecipeId, Ingredient.fromNetwork(pBuffer), pBuffer.readEnum(EnumTolerance.class), pBuffer.readFloat());
+        public @Nullable HydroRecipe fromNetwork(ResourceLocation pRecipeId, FriendlyByteBuf pBuffer) {
+            return new HydroRecipe(pRecipeId, Ingredient.fromNetwork(pBuffer), Product.fromNetwork(pBuffer), pBuffer.readEnum(EnumTolerance.class), pBuffer.readFloat());
         }
 
         @Override
-        public void toNetwork(FriendlyByteBuf pBuffer, TempUnitRecipe pRecipe) {
+        public void toNetwork(FriendlyByteBuf pBuffer, HydroRecipe pRecipe) {
             pRecipe.getInput().toNetwork(pBuffer);
-            pBuffer.writeEnum(pRecipe.tempChange);
+            pRecipe.getOutput().toNetwork(pBuffer);
+            pBuffer.writeEnum(pRecipe.humidityChange);
             pBuffer.writeFloat(pRecipe.useChance);
         }
     };
 
-    public TempUnitRecipe(ResourceLocation id, Ingredient input, EnumTolerance tempChange, float useChance) {
+    public HydroRecipe(ResourceLocation id, Ingredient input, Product output, EnumTolerance humidityChange, float useChance) {
         this.id = id;
         this.input = input;
-        this.tempChange = tempChange;
+        this.output = output;
+        this.humidityChange = humidityChange;
         this.useChance = useChance;
     }
 
@@ -82,11 +88,11 @@ public class TempUnitRecipe implements Recipe<Container> {
 
     @Override
     public RecipeType<?> getType() {
-        return EsotericRegistration.TEMP_UNIT_RECIPE.get();
+        return EsotericRegistration.HYDROREGULATOR_RECIPE.get();
     }
 
-    public EnumTolerance getTempChange() {
-        return tempChange;
+    public EnumTolerance getHumidityChange() {
+        return humidityChange;
     }
 
     public float getUseChance() {
@@ -95,5 +101,9 @@ public class TempUnitRecipe implements Recipe<Container> {
 
     public Ingredient getInput() {
         return input;
+    }
+
+    public Product getOutput() {
+        return output;
     }
 }

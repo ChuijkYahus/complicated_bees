@@ -1,6 +1,6 @@
 package com.accbdd.complicated_bees.compat.jei;
 
-import com.accbdd.complicated_bees.recipe.MutatorRecipe;
+import com.accbdd.complicated_bees.recipe.HydroRecipe;
 import com.accbdd.complicated_bees.registry.ItemsRegistration;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -19,22 +19,22 @@ import net.minecraft.world.item.ItemStack;
 
 import static com.accbdd.complicated_bees.ComplicatedBees.MODID;
 
-public class MutatorRecipeCategory implements IRecipeCategory<MutatorRecipe> {
+public class HydroRecipeCategory implements IRecipeCategory<HydroRecipe> {
 
-    public static final ResourceLocation ID = new ResourceLocation(MODID, "jei/mutator");
-    public static final RecipeType<MutatorRecipe> TYPE = new RecipeType<>(ID, MutatorRecipe.class);
+    public static final ResourceLocation ID = new ResourceLocation(MODID, "jei/temp_unit");
+    public static final RecipeType<HydroRecipe> TYPE = new RecipeType<>(ID, HydroRecipe.class);
 
-    private static final Component TITLE = Component.translatable("jei.complicated_bees.mutator");
+    private static final Component TITLE = Component.translatable("jei.complicated_bees.hydroregulator");
 
     public final IDrawable icon;
     public final IDrawable BACKGROUND = ComplicatedBeesJEI.createDrawable(new ResourceLocation(MODID, "textures/gui/jei/single_slot.png"), 0, 0, 143, 40, 143, 40);
 
-    public MutatorRecipeCategory(IGuiHelper helper) {
-        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ItemsRegistration.MELLARIUM_MUTATOR.get()));
+    public HydroRecipeCategory(IGuiHelper helper) {
+        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(ItemsRegistration.MELLARIUM_TEMP_UNIT.get()));
     }
 
     @Override
-    public RecipeType<MutatorRecipe> getRecipeType() {
+    public RecipeType<HydroRecipe> getRecipeType() {
         return TYPE;
     }
 
@@ -54,18 +54,22 @@ public class MutatorRecipeCategory implements IRecipeCategory<MutatorRecipe> {
     }
 
     @Override
-    public void setRecipe(IRecipeLayoutBuilder builder, MutatorRecipe recipe, IFocusGroup focuses) {
+    public void setRecipe(IRecipeLayoutBuilder builder, HydroRecipe recipe, IFocusGroup focuses) {
         builder.addSlot(RecipeIngredientRole.INPUT, 12, 12)
                 .setSlotName("input")
                 .addIngredients(recipe.getInput());
     }
 
     @Override
-    public void createRecipeExtras(IRecipeExtrasBuilder builder, MutatorRecipe recipe, IFocusGroup focuses) {
+    public void createRecipeExtras(IRecipeExtrasBuilder builder, HydroRecipe recipe, IFocusGroup focuses) {
         IRecipeCategory.super.createRecipeExtras(builder, recipe, focuses);
-        var widget = builder.addText(Component.translatable("jei.complicated_bees.modifier", recipe.getMutationModifier() + "x"), 81, 14);
-        widget.setPosition(59, 5, 81, 31, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+        var widget = builder.addText(Component.translatable("jei.complicated_bees.modifier", recipe.getHumidityChange().getTranslationKey()), 81, 14);
+        widget.setPosition(59, 5, 81, 14, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
         widget.setTextAlignment(HorizontalAlignment.CENTER);
         widget.setTextAlignment(VerticalAlignment.CENTER);
+        var widget2 = builder.addText(Component.translatable("jei.complicated_bees.consumption_chance", String.format("%.0f%%", recipe.getUseChance() * 100)), 81, 14);
+        widget2.setPosition(59, 22, 81, 14, HorizontalAlignment.CENTER, VerticalAlignment.CENTER);
+        widget2.setTextAlignment(HorizontalAlignment.CENTER);
+        widget2.setTextAlignment(VerticalAlignment.CENTER);
     }
 }
