@@ -2,11 +2,10 @@
   "type": "complicated_bees:hydroregulator",
   "humidity_change": "DOWN_1",
   "input": {
-    "tag": "minecraft:sand"
+    "item": "minecraft:sponge"
   },
   "output": {
-    "chance": 0.75,
-    "item": "minecraft:dirt"
+    "item": "minecraft:wet_sponge"
   },
-  "use_chance": 0.15
+  "use_chance": 0.05
 }

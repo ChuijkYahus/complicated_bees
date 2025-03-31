@@ -1,6 +1,6 @@
 package com.accbdd.complicated_bees.screen;
 
-import com.accbdd.complicated_bees.recipe.MutatorRecipe;
+import com.accbdd.complicated_bees.recipe.HydroRecipe;
 import com.accbdd.complicated_bees.registry.EsotericRegistration;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -12,15 +12,18 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeManager;
 
+import java.util.List;
+import java.util.Optional;
+
 import static com.accbdd.complicated_bees.ComplicatedBees.MODID;
 
-public class MellariumMutatorScreen extends AbstractContainerScreen<MellariumMutatorMenu> {
+public class MellariumHydroregulatorScreen extends AbstractContainerScreen<MellariumHydroregulatorMenu> {
     private final ResourceLocation GUI;
-    private final RecipeManager.CachedCheck<Container, MutatorRecipe> recipeCheck = RecipeManager.createCheck(EsotericRegistration.MUTATOR_RECIPE.get());
+    private final RecipeManager.CachedCheck<Container, HydroRecipe> recipeCheck = RecipeManager.createCheck(EsotericRegistration.HYDROREGULATOR_RECIPE.get());
 
-    public MellariumMutatorScreen(MellariumMutatorMenu menu, Inventory inventory, Component title) {
+    public MellariumHydroregulatorScreen(MellariumHydroregulatorMenu menu, Inventory inventory, Component title) {
         super(menu, inventory, title);
-        this.GUI = new ResourceLocation(MODID, "textures/gui/mellarium_mutator.png");
+        this.GUI = new ResourceLocation(MODID, "textures/gui/mellarium_hydroregulator.png");
         this.imageHeight = 161;
         this.imageWidth = 176;
         this.inventoryLabelY = imageHeight - 93;
@@ -45,10 +48,14 @@ public class MellariumMutatorScreen extends AbstractContainerScreen<MellariumMut
         super.render(graphics, mouseX, mouseY, partialTick);
         ItemStack stack = getMenu().getItems().get(0);
         recipeCheck.getRecipeFor(new SimpleContainer(stack), getMenu().getLevel()).ifPresent(recipe -> {
-            graphics.blit(GUI, leftPos+84, topPos+26, 176, 0, 8, 8);
-            if (mouseX > leftPos+83 && mouseX < leftPos+83+10 && mouseY > topPos+25 && mouseY < topPos+25+10) {
+            graphics.blit(GUI, leftPos+82, topPos+27, recipe.getHumidityChange().up > 0 ? 176 : 183, 0, 7, 11);
+            if (mouseX > leftPos+81 && mouseX < leftPos+81+9 && mouseY > topPos+24 && mouseY < topPos+24+15) {
                 graphics.renderTooltip(this.font,
-                        Component.translatable("jei.complicated_bees.modifier", recipe.getMutationModifier() + "x"),
+                        List.of(
+                                Component.translatable("jei.complicated_bees.modifier", recipe.getHumidityChange().getTranslationKey()),
+                                Component.translatable("jei.complicated_bees.consumption_chance", String.format("%.0f%%", recipe.getUseChance() * 100))
+                        ),
+                        Optional.empty(),
                         mouseX,
                         mouseY);
             }

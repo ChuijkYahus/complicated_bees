@@ -1,7 +1,7 @@
 package com.accbdd.complicated_bees.block;
 
-import com.accbdd.complicated_bees.block.entity.mellarium.MellariumTempUnitBlockEntity;
-import com.accbdd.complicated_bees.screen.MellariumTempUnitMenu;
+import com.accbdd.complicated_bees.block.entity.mellarium.MellariumHydroregulatorBlockEntity;
+import com.accbdd.complicated_bees.screen.MellariumHydroregulatorMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -20,16 +20,16 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
-public class MellariumTempUnitBlock extends MellariumBlock {
+public class MellariumHydroregulatorBlock extends MellariumBlock {
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return new MellariumTempUnitBlockEntity(pPos, pState);
+        return new MellariumHydroregulatorBlockEntity(pPos, pState);
     }
 
     @Override
     public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
-        if (!(pNewState.getBlock() instanceof MellariumTempUnitBlock) && pLevel.getBlockEntity(pPos) instanceof MellariumTempUnitBlockEntity be) {
-            IItemHandler handler = be.getItemHandler().resolve().get();
+        if (!(pNewState.getBlock() instanceof MellariumHydroregulatorBlock) && pLevel.getBlockEntity(pPos) instanceof MellariumHydroregulatorBlockEntity hydroregulator) {
+            IItemHandler handler = hydroregulator.getItemHandler().resolve().get();
             for (int i = 0; i < handler.getSlots(); i++) {
                 Containers.dropItemStack(pLevel, pPos.getX(), pPos.getY(), pPos.getZ(), handler.getStackInSlot(i));
             }
@@ -40,7 +40,7 @@ public class MellariumTempUnitBlock extends MellariumBlock {
     @Override
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         if (!pLevel.isClientSide) {
-            if (pLevel.getBlockEntity(pPos) instanceof MellariumTempUnitBlockEntity) {
+            if (pLevel.getBlockEntity(pPos) instanceof MellariumHydroregulatorBlockEntity) {
                 MenuProvider containerProvider = new MenuProvider() {
                     @Override
                     public Component getDisplayName() {
@@ -49,7 +49,7 @@ public class MellariumTempUnitBlock extends MellariumBlock {
 
                     @Override
                     public AbstractContainerMenu createMenu(int windowId, Inventory playerInventory, Player player) {
-                        return new MellariumTempUnitMenu(windowId, player, pPos);
+                        return new MellariumHydroregulatorMenu(windowId, player, pPos);
                     }
                 };
 
