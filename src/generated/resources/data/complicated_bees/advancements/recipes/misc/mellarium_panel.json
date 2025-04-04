@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_centrifuge": {
+    "has_beeswax": {
       "conditions": {
         "items": [
           {
             "items": [
-              "complicated_bees:centrifuge"
+              "complicated_bees:beeswax"
             ]
           }
         ]
@@ -15,20 +15,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "complicated_bees:microscope"
+        "recipe": "complicated_bees:mellarium_panel"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_centrifuge",
+      "has_beeswax",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "complicated_bees:microscope"
+      "complicated_bees:mellarium_panel"
     ]
   },
   "sends_telemetry_event": false
