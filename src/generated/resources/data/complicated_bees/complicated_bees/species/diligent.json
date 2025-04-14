@@ -1,5 +1,5 @@
 {
-  "color": "4542f5",
+  "color": "b642f5",
   "default_chromosome": {
     "complicated_bees:active_time": {
       "data": "diurnal",
@@ -23,16 +23,16 @@
     },
     "complicated_bees:humidity": {
       "data": "normal",
-      "dominant": 1,
+      "dominant": 0,
       "tolerance": "NONE"
     },
     "complicated_bees:lifespan": {
-      "data": "shorter",
-      "dominant": 1
+      "data": "short",
+      "dominant": 0
     },
     "complicated_bees:productivity": {
       "data": "slow",
-      "dominant": 1
+      "dominant": 0
     },
     "complicated_bees:species": {
       "data": "complicated_bees:invalid",
@@ -40,7 +40,7 @@
     },
     "complicated_bees:temperature": {
       "data": "normal",
-      "dominant": 1,
+      "dominant": 0,
       "tolerance": "BOTH_1"
     },
     "complicated_bees:territory": {
@@ -55,10 +55,17 @@
       "dominant": 1
     }
   },
-  "nest_color": "4542f5",
+  "nest_color": "b642f5",
   "products": [
     {
-      "chance": 0.4,
+      "chance": 0.35,
+      "item": "complicated_bees:comb",
+      "nbt": {
+        "comb_type": "complicated_bees:stringy"
+      }
+    },
+    {
+      "chance": 0.1,
       "item": "complicated_bees:comb",
       "nbt": {
         "comb_type": "complicated_bees:honey"

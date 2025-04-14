@@ -1,5 +1,5 @@
 {
-  "color": "4542f5",
+  "color": "a3d945",
   "default_chromosome": {
     "complicated_bees:active_time": {
       "data": "diurnal",
@@ -10,7 +10,7 @@
       "dominant": 1
     },
     "complicated_bees:effect": {
-      "data": "INVALID",
+      "data": "complicated_bees:venomous",
       "dominant": 1
     },
     "complicated_bees:fertility": {
@@ -18,11 +18,11 @@
       "dominant": 1
     },
     "complicated_bees:flower": {
-      "data": "complicated_bees:flower",
+      "data": "complicated_bees:jungle",
       "dominant": 1
     },
     "complicated_bees:humidity": {
-      "data": "normal",
+      "data": "wet",
       "dominant": 1,
       "tolerance": "NONE"
     },
@@ -39,8 +39,8 @@
       "dominant": 1
     },
     "complicated_bees:temperature": {
-      "data": "normal",
-      "dominant": 1,
+      "data": "warm",
+      "dominant": 0,
       "tolerance": "BOTH_1"
     },
     "complicated_bees:territory": {
@@ -51,17 +51,17 @@
       "dominant": 1
     },
     "complicated_bees:weatherproof": {
-      "data": 0,
+      "data": 1,
       "dominant": 1
     }
   },
-  "nest_color": "4542f5",
+  "nest_color": "a3d945",
   "products": [
     {
-      "chance": 0.4,
+      "chance": 0.45,
       "item": "complicated_bees:comb",
       "nbt": {
-        "comb_type": "complicated_bees:honey"
+        "comb_type": "complicated_bees:silky"
       }
     }
   ]
