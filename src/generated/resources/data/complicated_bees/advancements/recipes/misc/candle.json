@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_frame": {
+    "has_beeswax": {
       "conditions": {
         "items": [
           {
             "items": [
-              "complicated_bees:frame"
+              "complicated_bees:beeswax"
             ]
           }
         ]
@@ -15,20 +15,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "complicated_bees:honeyed_stick"
+        "recipe": "complicated_bees:candle"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_frame",
+      "has_beeswax",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "complicated_bees:honeyed_stick"
+      "complicated_bees:candle"
     ]
   },
   "sends_telemetry_event": false
