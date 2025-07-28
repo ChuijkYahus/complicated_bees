@@ -5,12 +5,12 @@ import com.accbdd.complicated_bees.registry.BlockEntitiesRegistration;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class MellariumSkyboxBlockEntity extends MellariumAbstractPoweredBlockEntity implements IMellariumModifier, IMellariumTickable {
-    private static final int ENERGY_USAGE = 10;
-    private static final BeeHousingModifier MODIFIER = new BeeHousingModifier.Builder().skyOverride(true).build();
+public class MellariumTemporalSimulatorBlockEntity extends MellariumAbstractPoweredBlockEntity implements IMellariumModifier, IMellariumTickable {
+    private static final int ENERGY_USAGE = 100;
+    private static final BeeHousingModifier MODIFIER = new BeeHousingModifier.Builder().sleepOverride(true).build();
 
-    public MellariumSkyboxBlockEntity(BlockPos pPos, BlockState pBlockState) {
-        super(BlockEntitiesRegistration.MELLARIUM_SKYBOX_BLOCK_ENTITY.get(), pPos, pBlockState);
+    public MellariumTemporalSimulatorBlockEntity(BlockPos pPos, BlockState pBlockState) {
+        super(BlockEntitiesRegistration.MELLARIUM_TEMPORAL_SIMULATOR_BLOCK_ENTITY.get(), pPos, pBlockState);
     }
 
     @Override
