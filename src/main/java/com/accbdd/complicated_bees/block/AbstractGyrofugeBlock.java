@@ -1,10 +1,10 @@
 package com.accbdd.complicated_bees.block;
 
-import com.accbdd.complicated_bees.block.entity.mellarium.MellariumAbstractBlockEntity;
-import com.accbdd.complicated_bees.block.entity.mellarium.MellariumControllerBlockEntity;
+import com.accbdd.complicated_bees.block.entity.gyrofuge.GyrofugeAbstractBlockEntity;
+import com.accbdd.complicated_bees.block.entity.gyrofuge.GyrofugeControllerBlockEntity;
 import com.accbdd.complicated_bees.datagen.BlockTagGenerator;
 import com.accbdd.complicated_bees.registry.EsotericRegistration;
-import com.accbdd.complicated_bees.screen.MellariumMenu;
+import com.accbdd.complicated_bees.screen.GyrofugeMenu;
 import com.accbdd.complicated_bees.util.MultiblockHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -31,10 +31,10 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class AbstractMellariumBlock extends BaseEntityBlock {
-    public static final String SCREEN_MELLARIUM = "gui.complicated_bees.mellarium";
+public abstract class AbstractGyrofugeBlock extends BaseEntityBlock {
+    public static final String SCREEN_GYROFUGE = "gui.complicated_bees.gyrofuge";
 
-    public AbstractMellariumBlock(Properties prop) {
+    public AbstractGyrofugeBlock(Properties prop) {
         super(prop);
     }
 
@@ -46,14 +46,14 @@ public abstract class AbstractMellariumBlock extends BaseEntityBlock {
     @Override
     public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
         super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
-        MultiblockHelper.tryBuildMellarium(pLevel, pPos, pPlacer == null ? null : pPlacer.getUUID());
+        MultiblockHelper.tryBuildGyrofuge(pLevel, pPos);
     }
 
     @Override
     public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pMovedByPiston) {
-        if (pLevel.getBlockEntity(pPos) instanceof MellariumAbstractBlockEntity mellariumBase && mellariumBase.getLogic() != null) {
-            if (!pNewState.is(BlockTagGenerator.MELLARIUM))
-                mellariumBase.getLogic().deconstruct(pPos);
+        if (pLevel.getBlockEntity(pPos) instanceof GyrofugeAbstractBlockEntity gyrofugeBase && gyrofugeBase.getLogic() != null) {
+            if (!pNewState.is(BlockTagGenerator.GYROFUGE))
+                gyrofugeBase.getLogic().deconstruct(pPos);
         }
         super.onRemove(pState, pLevel, pPos, pNewState, pMovedByPiston);
     }
@@ -61,21 +61,21 @@ public abstract class AbstractMellariumBlock extends BaseEntityBlock {
     @Override
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         if (!pLevel.isClientSide) {
-            if (pLevel.getBlockEntity(pPos) instanceof MellariumAbstractBlockEntity mellarium) {
-                if (mellarium.getLogic() == null) {
-                    pPlayer.displayClientMessage(Component.translatable("gui.complicated_bees.invalid_mellarium"), true);
+            if (pLevel.getBlockEntity(pPos) instanceof GyrofugeAbstractBlockEntity gyrofuge) {
+                if (gyrofuge.getLogic() == null) {
+                    pPlayer.displayClientMessage(Component.translatable("gui.complicated_bees.invalid_gyrofuge"), true);
                     return InteractionResult.CONSUME;
                 }
 
                 MenuProvider containerProvider = new MenuProvider() {
                     @Override
                     public Component getDisplayName() {
-                        return Component.translatable(SCREEN_MELLARIUM);
+                        return Component.translatable(SCREEN_GYROFUGE);
                     }
 
                     @Override
                     public AbstractContainerMenu createMenu(int windowId, Inventory playerInventory, Player player) {
-                        return new MellariumMenu(windowId, player, pPos, mellarium.getLogic().getController().getData());
+                        return new GyrofugeMenu(windowId, player, pPos, gyrofuge.getLogic().getController().getData());
                     }
                 };
 
@@ -92,7 +92,7 @@ public abstract class AbstractMellariumBlock extends BaseEntityBlock {
             return null;
         } else {
             return (lvl, pos, st, blockEntity) -> {
-                if (blockEntity instanceof MellariumControllerBlockEntity be) {
+                if (blockEntity instanceof GyrofugeControllerBlockEntity be) {
                     be.tickServer();
                 }
             };
