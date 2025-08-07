@@ -1,6 +1,6 @@
 package com.accbdd.complicated_bees.block;
 
-import com.accbdd.complicated_bees.block.entity.mellarium.MellariumEnergyCellBlockEntity;
+import com.accbdd.complicated_bees.block.entity.gyrofuge.GyrofugeEnergyCellBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -13,17 +13,17 @@ import net.minecraft.world.phys.BlockHitResult;
 
 import java.text.DecimalFormat;
 
-public class MellariumEnergyCellBlock extends MellariumBlock {
+public class GyrofugeEnergyCellBlock extends GyrofugeBlock {
     public static final DecimalFormat FORMAT = new DecimalFormat("0.##");
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return new MellariumEnergyCellBlockEntity(pPos, pState);
+        return new GyrofugeEnergyCellBlockEntity(pPos, pState);
     }
 
     @Override
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        if (!pLevel.isClientSide() && pLevel.getBlockEntity(pPos) instanceof MellariumEnergyCellBlockEntity cell) {
+        if (!pLevel.isClientSide() && pLevel.getBlockEntity(pPos) instanceof GyrofugeEnergyCellBlockEntity cell) {
             pPlayer.displayClientMessage(Component.translatable("gui.complicated_bees.energy_cell",
                     FORMAT.format(cell.getEnergy().getEnergyStored() / 1000D),
                     FORMAT.format(cell.getEnergy().getMaxEnergyStored() / 1000D)), true);
