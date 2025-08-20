@@ -1,7 +1,7 @@
 {
   "parent": "complicated_bees:advanced_products",
   "criteria": {
-    "use_mellarium": {
+    "use_gyrofuge": {
       "conditions": {
         "location": [
           {
@@ -11,7 +11,7 @@
                 "state": {
                   "assembled": "side"
                 },
-                "tag": "complicated_bees:multiblock/mellarium"
+                "tag": "complicated_bees:multiblock/gyrofuge"
               }
             }
           },
@@ -27,21 +27,21 @@
   "display": {
     "announce_to_chat": true,
     "description": {
-      "translate": "advancements.complicated_bees.mellarium.description"
+      "translate": "advancements.complicated_bees.gyrofuge.description"
     },
     "frame": "goal",
     "hidden": false,
     "icon": {
-      "item": "complicated_bees:mellarium_base"
+      "item": "complicated_bees:gyrofuge_base"
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.complicated_bees.mellarium.title"
+      "translate": "advancements.complicated_bees.gyrofuge.title"
     }
   },
   "requirements": [
     [
-      "use_mellarium"
+      "use_gyrofuge"
     ]
   ],
   "sends_telemetry_event": false
