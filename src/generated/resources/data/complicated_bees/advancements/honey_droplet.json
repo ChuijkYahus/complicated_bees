@@ -1,12 +1,12 @@
 {
-  "parent": "complicated_bees:honey_droplet",
+  "parent": "complicated_bees:processing",
   "criteria": {
-    "has_analyzer": {
+    "has_honey_droplet": {
       "conditions": {
         "items": [
           {
             "items": [
-              "complicated_bees:analyzer"
+              "complicated_bees:honey_droplet"
             ]
           }
         ]
@@ -17,21 +17,21 @@
   "display": {
     "announce_to_chat": true,
     "description": {
-      "translate": "advancements.complicated_bees.analyzer.description"
+      "translate": "advancements.complicated_bees.honey_droplet.description"
     },
     "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "complicated_bees:analyzer"
+      "item": "complicated_bees:honey_droplet"
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.complicated_bees.analyzer.title"
+      "translate": "advancements.complicated_bees.honey_droplet.title"
     }
   },
   "requirements": [
     [
-      "has_analyzer"
+      "has_honey_droplet"
     ]
   ],
   "sends_telemetry_event": false
