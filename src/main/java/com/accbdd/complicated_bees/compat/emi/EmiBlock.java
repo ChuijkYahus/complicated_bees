@@ -1,51 +1,95 @@
-package com.accbdd.complicated_bees.compat.jei.ingredient;
+package com.accbdd.complicated_bees.compat.emi;
 
-import mezz.jei.api.gui.builder.ITooltipBuilder;
-import mezz.jei.api.ingredients.IIngredientRenderer;
-import net.minecraft.MethodsReturnNonnullByDefault;
+import dev.emi.emi.api.stack.EmiStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.ModelManager;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.data.ModelData;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.spongepowered.asm.mixin.injection.invoke.arg.ArgumentIndexOutOfBoundsException;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 
 import static com.accbdd.complicated_bees.ComplicatedBees.LOGGER;
 
-@MethodsReturnNonnullByDefault @ParametersAreNonnullByDefault
-public class BlockIngredientRenderer implements IIngredientRenderer<Block> {
-    @Override
-    public void render(GuiGraphics guiGraphics, Block ingredient) {
-        drawBlock(guiGraphics, ingredient);
+public class EmiBlock extends EmiStack {
+    private final Block block;
+    private final ItemStack stack;
+
+    public EmiBlock(Block block) {
+        this.block = block;
+        this.stack = block.asItem().getDefaultInstance();
     }
 
-    private void drawBlock(GuiGraphics guiGraphics, Block block) {
+    @Override
+    public List<EmiStack> getEmiStacks() {
+        return List.of(EmiStack.of(block), EmiStack.of(stack));
+    }
+
+    @Override
+    public EmiStack copy() {
+        return new EmiBlock(block);
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return false;
+    }
+
+    @Override
+    public CompoundTag getNbt() {
+        return null;
+    }
+
+    @Override
+    public Object getKey() {
+        return block;
+    }
+
+    @Override
+    public ResourceLocation getId() {
+        return ForgeRegistries.BLOCKS.getKey(block);
+    }
+
+    @Override
+    public List<Component> getTooltipText() {
+        return List.of(block.getName());
+    }
+
+    @Override
+    public Component getName() {
+        return block.getName();
+    }
+
+    @Override
+    public void render(GuiGraphics draw, int x, int y, float delta) {
+        render(draw, x, y, delta, 0);
+    }
+
+    @Override
+    public void render(GuiGraphics draw, int x, int y, float delta, int flags) {
         try {
-            ItemStack blockItemStack = new ItemStack(block.asItem());
-            if (!blockItemStack.is(Items.AIR)) {
-                guiGraphics.renderFakeItem(new ItemStack(block.asItem()), 0, 0);
+            if (block.asItem() != Items.AIR) {
+                draw.renderFakeItem(stack, x, y);
             } else {
-                // Handle blocks without corresponding BlockItems
                 ModelManager manager = Minecraft.getInstance().getModelManager();
                 Level level = Minecraft.getInstance().level;
                 if (level != null) {
                     ResourceLocation loc = level.registryAccess().registry(Registries.BLOCK).orElseThrow().getKey(block);
                     if (loc != null) {
                         TextureAtlasSprite sprite = manager.getBlockModelShaper().getBlockModel(block.defaultBlockState()).getParticleIcon(ModelData.EMPTY);
-                        guiGraphics.blit(0, 0, 0, 16, 16, sprite);
+                        draw.blit(x, y, 0, 16, 16, sprite);
                     } else {
-                        LOGGER.debug("Error parsing block: {} for JEI plugin.", block.getName().getString());
+                        LOGGER.debug("Error parsing block: {} for EMI plugin.", block.getName().getString());
                     }
                 }
             }
@@ -54,19 +98,5 @@ public class BlockIngredientRenderer implements IIngredientRenderer<Block> {
                     block.getName().getString());
             e.printStackTrace();
         }
-
-    }
-
-    /**
-     * Get the tooltip text for this ingredient. JEI renders the tooltip based on this.
-     *
-     * @param ingredient  The ingredient to get the tooltip for.
-     * @param tooltipFlag Whether to show advanced information on item tooltips, toggled by F3+H
-     * @return The tooltip text for the ingredient.
-     * @deprecated use {@link #getTooltip(ITooltipBuilder, Object, TooltipFlag)}
-     */
-    @Override
-    public List<Component> getTooltip(Block ingredient, TooltipFlag tooltipFlag) {
-        return List.of(ingredient.getName());
     }
 }
